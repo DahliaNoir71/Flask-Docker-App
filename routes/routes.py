@@ -3,7 +3,7 @@ from db import db
 from models.todo import Todo
 
 
-def create_routes(app):
+def create_display_routes(app):
     # Route pour afficher la liste des todos
     @app.route('/')
     @app.route('/todos')
@@ -11,8 +11,19 @@ def create_routes(app):
         todos = Todo.query.all()
         return render_template('todos_list.html', todos=todos)
 
+    @app.route('/add_todo')
+    def display_add_todo():
+        return render_template('add_todo.html')
+
+    @app.route('/todos/<int:todo_id>/edit')
+    def display_edit_todo(id):
+        todo = Todo.query.get(id)
+        return render_template('edit_todo.html', todo=todo)
+
+
+def create_api_routes(app):
     # Route pour ajouter un todo (POST)
-    @app.route('/todos', methods=['POST'])
+    @app.route('/add_todo', methods=['POST'])
     def add_todo():
         data = request.get_json()
         title = data.get('title')
@@ -48,3 +59,8 @@ def create_routes(app):
         db.session.delete(todo)
         db.session.commit()
         return jsonify({"message": "Todo deleted"}), 200
+
+
+def create_routes(app):
+    create_display_routes(app)
+    create_api_routes(app)
