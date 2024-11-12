@@ -47,7 +47,7 @@ def create_api_routes(app):
         todo.description = data.get('description', todo.description)
 
         db.session.commit()
-        return jsonify(todo.to_dict())
+        return jsonify(todo.to_dict()), 200
 
     # Route pour supprimer un todo (DELETE)
     @app.route('/todos/<int:id>', methods=['DELETE'])
