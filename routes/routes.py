@@ -15,7 +15,7 @@ def create_display_routes(app):
     def display_add_todo():
         return render_template('add_todo.html')
 
-    @app.route('/todos/<int:todo_id>/edit')
+    @app.route('/todos/edit/<int:id>/', methods=['GET'])
     def display_edit_todo(id):
         todo = Todo.query.get(id)
         return render_template('edit_todo.html', todo=todo)
